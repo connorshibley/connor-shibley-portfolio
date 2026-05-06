@@ -65,9 +65,9 @@ function useScrollParallax(ref, factor = 0.18) {
 function useTheme() {
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'dark';
+      return localStorage.getItem('theme') || 'light';
     }
-    return 'dark';
+    return 'light';
   });
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
