@@ -7,7 +7,7 @@ function useReveal() {
     if (!ref.current) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) { setSeen(true); io.disconnect(); }
+        setSeen(e.isIntersecting);
       });
     }, { threshold: 0.12 });
     io.observe(ref.current);
@@ -67,7 +67,7 @@ function Nav({ scrolled, onNav, route }) {
     ['about', '01', 'About'],
     ['experience', '02', 'Experience'],
     ['projects', '03', 'Projects'],
-    ['resume', '04', 'Resume'],
+    ['resume', '04', 'Résumé'],
     ['contact', '05', 'Contact'],
   ];
   return (
@@ -161,15 +161,12 @@ function Hero({ onNav }) {
           </h1>
 
           <div className="hero-sub-row">
-            <p className="hero-sub fade-up in stagger-3">
-              I'm Connor Shibley — an AI consultant at Licom.ai, President of the HWS AI Club, and a Division III goalie for the Hobart Statesmen. I help companies solve their problems with AI.
-            </p>
             <div className="hero-cta fade-up in stagger-4">
               <a className="btn btn-primary" href="#projects" onClick={(e) => { e.preventDefault(); onNav('projects'); }}>
                 See the work <span className="arr">&rarr;</span>
               </a>
               <a className="btn btn-ghost" href="#resume" onClick={(e) => { e.preventDefault(); onNav('resume'); }}>
-                View resume
+                View r&eacute;sum&eacute;
               </a>
             </div>
           </div>
@@ -223,13 +220,14 @@ function Marquee() {
 
 function ClientsMarquee() {
   const clients = [
-    'Southside Tap & Grill',
-    'Sumit Strength',
-    'Hobart and William Smith Colleges',
-    'Energizing Talent',
-    'CST Logistics',
-    'Delex Cargo',
-    'Licom.ai',
+    { id: 'southside', name: 'Southside Tap & Grill', src: 'logos/southside.png' },
+    { id: 'sumit', name: 'Summit Strength & Fitness', src: 'logos/summit.png' },
+    { id: 'hws', name: 'Hobart and William Smith Colleges', src: 'logos/hws.png', color: true },
+    { id: 'energizing', name: 'Energizing Talent', src: 'logos/energizing-talent.png', color: true },
+    { id: 'cst', name: 'CST Logistics', src: 'logos/cst.png', color: true },
+    { id: 'delex', name: 'Delex Cargo Services', src: 'logos/delex.png', color: true },
+    { id: 'licom', name: 'Licom.ai', src: 'logos/licom.png' },
+    { id: 'flx', name: 'FLX Extracts', src: 'logos/flx.png', color: true },
   ];
   const row = [...clients, ...clients];
   return (
@@ -237,12 +235,15 @@ function ClientsMarquee() {
       <div className="clients-head">
         <span className="clients-label">Clients &middot; Collaborators</span>
       </div>
-      <div className="clients-marquee" aria-hidden="true">
+      <div className="clients-marquee">
         <div className="clients-track">
           {row.map((c, i) => (
-            <div key={i} className="clients-item">
-              <span className="clients-dot">&bull;</span>
-              <span className="clients-name">{c}</span>
+            <div key={c.id + '-' + i} className={`clients-item clients-logo-item${c.color ? ' is-color' : ''}`} title={c.name}>
+              <img
+                src={c.src}
+                alt={c.name}
+                style={{ width: '220px', height: '110px', objectFit: 'contain' }}
+              />
             </div>
           ))}
         </div>
@@ -319,7 +320,7 @@ function Experience() {
       ix: '01',
       role: 'AI Consulting Intern',
       org: 'Licom.ai · Huntington Beach, CA',
-      blurb: 'Support AI marketing and implementation projects. Manage LinkedIn presence across client accounts — content, analytics, and strategy. Run structured QA reviews of client dashboards and AI automation deliverables.',
+      blurb: 'Support AI marketing and implementation projects. Manage LinkedIn presence across client accounts — content, analytics, and strategy. Run structured QA reviews of client dashboards and AI automation deliverables. Draft issue reports and Linear tickets, coordinating cross-functional feedback on client work.',
       when: 'Jan 2026 — Present',
     },
     {
@@ -396,7 +397,21 @@ function Projects() {
   const [lightbox, setLightbox] = useState(null);
   const rows = [
     {
-      ix: '01', year: '2026', kind: 'EDU · LMS', slug: 'hws-literacy',
+      ix: '01', year: '2026', kind: 'EDU · WEB APP', slug: 'ai-fluency-coach',
+      title: 'AI Fluency Coach', titleIt: 'Fluency',
+      meta: 'hwsaicoach.com · Adaptive assessment · 6 dimensions',
+      note: 'Built an AI fluency assessment platform from scratch — an adaptive 10-minute test that scores students across six dimensions (fundamentals, prompting, workflow, ethics, evaluation, integration), then generates personalized resources and a class leaderboard. Live at hwsaicoach.com, used by HWS students and faculty.',
+      stack: ['React', 'Adaptive Assessment', 'Leaderboard', 'Resources'],
+      facts: { Role: 'Designer + Builder', Scope: 'End-to-end', Status: 'Live · hwsaicoach.com' },
+      photos: [
+        { src: 'projects/ai-fluency-coach/ai-fluency-coach.png', cap: 'AI Fluency Coach — hwsaicoach.com landing page', href: 'https://hwsaicoach.com/' },
+      ],
+      links: [
+        { label: 'Visit live site ↗', href: 'https://hwsaicoach.com/' },
+      ],
+    },
+    {
+      ix: '02', year: '2026', kind: 'EDU · LMS', slug: 'hws-literacy',
       title: 'HWS AI Literacy Course', titleIt: 'Literacy',
       meta: 'Canvas LMS · Four modules · Three-tier policy',
       note: 'A campus-wide AI literacy course delivered through Canvas. Four modules cover tool fluency, ethics, academic integrity, and applied workflows. The three-tier faculty policy scaffold gives instructors a clear framework for disclosure and permitted use.',
@@ -412,7 +427,7 @@ function Projects() {
       links: [],
     },
     {
-      ix: '02', year: '2025', kind: 'CLIENT · QA', slug: 'cst-dashboard',
+      ix: '03', year: '2025', kind: 'CLIENT · QA', slug: 'cst-dashboard',
       title: 'CST Logistics Dashboard QA', titleIt: 'QA',
       meta: 'Vercel · Linear · Production',
       note: 'Production QA for CST Logistics — a Chicagoland intermodal trucking and drayage carrier — built and shipped at Licom.ai. Regression cycles on each Vercel preview, structured Linear ticketing with repro steps and screenshots.',
@@ -427,7 +442,7 @@ function Projects() {
       ],
     },
     {
-      ix: '03', year: '2025', kind: 'CLUB · CURRICULUM', slug: 'ai-bootcamp',
+      ix: '04', year: '2025', kind: 'CLUB · CURRICULUM', slug: 'ai-bootcamp',
       title: 'AI Club Bootcamp', titleIt: 'Bootcamp',
       meta: '20 weeks · ~20 members · Project-based',
       note: 'Co-designed and co-led a 20-week bootcamp built around end-of-module deliverables and weekly critique. Focus shifted from tool tours to taste — students leave with a portfolio of real work, not a stack of demos.',
@@ -439,7 +454,7 @@ function Projects() {
       links: [],
     },
     {
-      ix: '04', year: '2025', kind: 'AUTOMATION', slug: 'weekly-digest',
+      ix: '05', year: '2025', kind: 'AUTOMATION', slug: 'weekly-digest',
       title: 'AI Club Weekly Digest', titleIt: 'Digest',
       meta: 'n8n · OpenAI · Gmail · Sundays 10am ET',
       note: 'An n8n workflow that runs every Sunday at 10am ET — pulls the email list from a Google Sheet, fetches the latest AI news, has an OpenAI model write a personalized digest, then loops over the recipients and sends each one through Gmail.',
@@ -451,7 +466,7 @@ function Projects() {
       links: [],
     },
     {
-      ix: '05', year: '2025', kind: 'CLIENT · MARKETING', slug: 'linkedin-analytics',
+      ix: '06', year: '2025', kind: 'CLIENT · MARKETING', slug: 'linkedin-analytics',
       title: 'Licom Client LinkedIn', titleIt: 'LinkedIn',
       meta: 'Energizing Talent · DelEx Air Cargo · Editorial calendars + long-form posts',
       note: "LinkedIn content strategy and execution for Licom.ai clients across two industries — HR consulting (Energizing Talent) and global air freight (DelEx Air Cargo). Built editorial calendars, wrote the long-form posts in each client's voice, designed supporting infographics.",
@@ -466,7 +481,7 @@ function Projects() {
       links: [],
     },
     {
-      ix: '06', year: '2026', kind: 'DESIGN · WEB', slug: 'web-design',
+      ix: '07', year: '2026', kind: 'DESIGN · WEB', slug: 'web-design',
       title: 'Web Design', titleIt: 'Design',
       meta: 'Four shipped client sites · Brand + landing pages',
       note: 'Design and build editorial, high-fidelity websites end-to-end — brand system, type pairing, copy, and live responsive implementation. Four shipped client sites this year.',
@@ -666,7 +681,7 @@ function ResumeViewer() {
     <section id="resume" ref={sectionRef} className="section section-pad">
       <Reveal className="section-head">
         <span className="num">04 /</span>
-        <h2>Resume</h2>
+        <h2>Résumé</h2>
         <span className="trail">&mdash; Scroll within the frame</span>
       </Reveal>
       <Reveal>
@@ -730,7 +745,7 @@ function Contact() {
               <span className="arrow">{'↗'}</span>
             </a>
             <a className="contact-channel" href="resume.pdf" download="Connor-Shibley-Resume.pdf">
-              <span className="k">Resume</span>
+              <span className="k">Résumé</span>
               <span className="v">Download &middot; PDF</span>
               <span className="arrow">&darr;</span>
             </a>
@@ -759,20 +774,20 @@ function Footer({ onNav }) {
           <a href="#about" onClick={(e) => { e.preventDefault(); onNav('about'); }}>About</a>
           <a href="#experience" onClick={(e) => { e.preventDefault(); onNav('experience'); }}>Experience</a>
           <a href="#projects" onClick={(e) => { e.preventDefault(); onNav('projects'); }}>Projects</a>
-          <a href="#resume" onClick={(e) => { e.preventDefault(); onNav('resume'); }}>Resume</a>
+          <a href="#resume" onClick={(e) => { e.preventDefault(); onNav('resume'); }}>Résumé</a>
           <a href="#contact" onClick={(e) => { e.preventDefault(); onNav('contact'); }}>Contact</a>
         </div>
         <div className="footer-col">
           <h4>Elsewhere</h4>
           <a href="https://linkedin.com/in/connor-shibley" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a href="mailto:Connorshibley@gmail.com">Email</a>
-          <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume (PDF)</a>
+          <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Résumé (PDF)</a>
           <a href="https://licom.ai" target="_blank" rel="noopener noreferrer">Licom.ai</a>
         </div>
       </div>
       <div className="footer-bottom">
         <span>&copy; 2026 Connor Shibley &middot; Geneva, NY &middot; Ottawa, ON</span>
-        <span>Built by hand</span>
+        <span>Built by hand &middot; Last updated May '26</span>
       </div>
     </footer>
   );

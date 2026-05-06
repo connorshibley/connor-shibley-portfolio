@@ -1,0 +1,69 @@
+.section-head .num {
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  min-width: 3.2em;
+}
+
+.proj-row::after, .exp-row::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.2, 0.65, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+.proj-row.row-in::after, .exp-row.row-in::after {
+  transform: scaleX(1);
+}
+
+.section-head h2 .lt {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  filter: blur(2px);
+  transition: opacity 0.55s cubic-bezier(0.2, 0.65, 0.2, 1),
+              transform 0.55s cubic-bezier(0.2, 0.65, 0.2, 1),
+              filter 0.4s ease;
+}
+.section-head.in h2 .lt {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.stat .val { font-variant-numeric: tabular-nums; }
+
+.hero-photo, .hero-silhouette { will-change: transform; }
+.hero-title { will-change: transform; }
+
+.proj-row.row-focus {
+  background: rgba(250, 250, 247, 0.025);
+}
+.proj-row.row-focus .title {
+  transform: translateX(4px);
+  transition: transform 0.4s cubic-bezier(0.2, 0.65, 0.2, 1), color 0.3s ease;
+}
+
+.clients-track.marquee-reverse {
+  animation-direction: reverse !important;
+}
+.marquee-track.marquee-reverse {
+  animation-direction: reverse !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-head h2 .lt,
+  .proj-row::after, .exp-row::after,
+  .clients-track.marquee-reverse,
+  .marquee-track.marquee-reverse {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
