@@ -42,7 +42,7 @@
 .hero-title { will-change: transform; }
 
 .proj-row.row-focus {
-  background: rgba(250, 250, 247, 0.025);
+  background: color-mix(in oklab, var(--paper) 2.5%, transparent);
 }
 .proj-row.row-focus .title {
   transform: translateX(4px);

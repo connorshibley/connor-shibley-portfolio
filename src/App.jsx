@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  useTheme,
   Nav,
   Hero,
   ClientsMarquee,
@@ -16,11 +17,12 @@ import {
 import { TweaksPanel, TWEAK_DEFAULTS, applyTweaks } from './tweaks.jsx';
 
 export default function App() {
+  const [theme, toggleTheme] = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
   const [tweaksOpen, setTweaksOpen] = useState(false);
 
-  useEffect(() => { applyTweaks(tweaks); }, [tweaks]);
+  useEffect(() => { applyTweaks(tweaks, theme); }, [tweaks, theme]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -55,7 +57,7 @@ export default function App() {
     <>
       <div className="grain" />
       <ScrollProgress />
-      <Nav scrolled={scrolled} onNav={handleNav} route="home" />
+      <Nav scrolled={scrolled} onNav={handleNav} route="home" theme={theme} onToggleTheme={toggleTheme} />
       <Hero onNav={handleNav} />
       <ClientsMarquee />
       <Stats />

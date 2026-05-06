@@ -36,21 +36,28 @@ const TYPE_PAIRS = {
   'serif-all': { display: "'Instrument Serif', serif", body: "'Instrument Serif', serif", mono: "'JetBrains Mono', monospace", label: 'Serif All' },
 };
 
-export function applyTweaks(t) {
+export function applyTweaks(t, theme) {
   const root = document.documentElement;
   root.style.setProperty('--accent', t.accent);
   root.style.setProperty('--accent-soft', hexToRgba(t.accent, 0.18));
+  const isLightTheme = theme === 'light';
   const tone = BG_TONES[t.bgTone] || BG_TONES.ink;
-  root.style.setProperty('--ink', tone['--ink']);
-  root.style.setProperty('--ink-2', tone['--ink-2']);
-  root.style.setProperty('--paper', tone['--paper']);
-  const isLight = t.bgTone === 'paper';
-  root.style.setProperty('--paper-dim', isLight ? 'rgba(18,17,15,0.72)' : 'rgba(250,250,247,0.72)');
-  root.style.setProperty('--paper-mute', isLight ? 'rgba(18,17,15,0.48)' : 'rgba(250,250,247,0.48)');
-  root.style.setProperty('--hairline', isLight ? 'rgba(18,17,15,0.12)' : 'rgba(250,250,247,0.08)');
-  root.style.setProperty('--hairline-strong', isLight ? 'rgba(18,17,15,0.22)' : 'rgba(250,250,247,0.16)');
+  if (isLightTheme) {
+    root.style.setProperty('--ink', '#FAFAF7');
+    root.style.setProperty('--ink-2', '#F0F0ED');
+    root.style.setProperty('--paper', '#0A0A0A');
+  } else {
+    root.style.setProperty('--ink', tone['--ink']);
+    root.style.setProperty('--ink-2', tone['--ink-2']);
+    root.style.setProperty('--paper', tone['--paper']);
+  }
+  const isLight = isLightTheme || t.bgTone === 'paper';
+  root.style.setProperty('--paper-dim', isLight ? 'rgba(10,10,10,0.72)' : 'rgba(250,250,247,0.72)');
+  root.style.setProperty('--paper-mute', isLight ? 'rgba(10,10,10,0.44)' : 'rgba(250,250,247,0.48)');
+  root.style.setProperty('--hairline', isLight ? 'rgba(10,10,10,0.08)' : 'rgba(250,250,247,0.08)');
+  root.style.setProperty('--hairline-strong', isLight ? 'rgba(10,10,10,0.14)' : 'rgba(250,250,247,0.16)');
   root.style.setProperty('--grain-opacity', (t.grainAmount / 100).toString());
-  root.style.setProperty('--glow-opacity', (t.glowAmount / 100).toString());
+  root.style.setProperty('--glow-opacity', isLightTheme ? '0.04' : (t.glowAmount / 100).toString());
   const pair = TYPE_PAIRS[t.typePair] || TYPE_PAIRS['serif-sans'];
   root.style.setProperty('--f-display', pair.display);
   root.style.setProperty('--f-body', pair.body);

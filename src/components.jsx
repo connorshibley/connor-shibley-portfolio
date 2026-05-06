@@ -62,7 +62,22 @@ function useScrollParallax(ref, factor = 0.18) {
   }, [ref, factor]);
 }
 
-function Nav({ scrolled, onNav, route }) {
+function useTheme() {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'dark';
+    }
+    return 'dark';
+  });
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+  const toggle = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+  return [theme, toggle];
+}
+
+function Nav({ scrolled, onNav, route, theme, onToggleTheme }) {
   const links = [
     ['about', '01', 'About'],
     ['experience', '02', 'Experience'],
@@ -85,6 +100,9 @@ function Nav({ scrolled, onNav, route }) {
               <span className="num">{num}</span>{label}
             </a>
           ))}
+          <button className="theme-toggle" onClick={onToggleTheme} aria-label="Toggle theme">
+            {theme === 'dark' ? '☀' : '☾'}
+          </button>
         </div>
       </nav>
     </div>
@@ -793,4 +811,4 @@ function Footer({ onNav }) {
   );
 }
 
-export { Reveal, ScrollProgress, Nav, Hero, Marquee, ClientsMarquee, About, Stats, Experience, Projects, ResumeViewer, Contact, Footer };
+export { useTheme, Reveal, ScrollProgress, Nav, Hero, Marquee, ClientsMarquee, About, Stats, Experience, Projects, ResumeViewer, Contact, Footer };
