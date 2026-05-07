@@ -246,6 +246,7 @@ function ClientsMarquee() {
     { id: 'delex', name: 'Delex Cargo Services', src: 'logos/delex.png', color: true },
     { id: 'licom', name: 'Licom.ai', src: 'logos/licom.png' },
     { id: 'flx', name: 'FLX Extracts', src: 'logos/flx.png', color: true },
+    { id: 'ccn', name: 'CCN', src: 'logos/ccn.svg', color: true },
   ];
   const row = [...clients, ...clients];
   return (

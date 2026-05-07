@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 150" fill="none" stroke="#E8615A" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+  <!-- First C: arc open to the right -->
+  <path d="M115 16 L70 16 C36 16, 16 42, 16 75 C16 108, 36 134, 70 134 L115 134"/>
+  <!-- Second C: arc open to the right -->
+  <path d="M280 16 L235 16 C201 16, 181 42, 181 75 C181 108, 201 134, 235 134 L280 134"/>
+  <!-- N: arch/rounded top connecting two verticals -->
+  <path d="M330 134 L330 50 C330 28, 352 16, 380 16 C408 16, 430 28, 430 50 L430 134"/>
+</svg>
